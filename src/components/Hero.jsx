@@ -1,5 +1,7 @@
 export default function Hero() {
+
   return (
+
     <section className="hero">
 
       <video
@@ -9,8 +11,14 @@ export default function Hero() {
         loop
         playsInline
       >
-        <source src="/entry-vid.mp4" type="video/mp4" />
+        <source
+          src="/entry-vid.mp4"
+          type="video/mp4"
+        />
       </video>
+
+      {/* HERO PARTICLE OVERLAY */}
+      <div className="hero-particle-overlay"></div>
 
     </section>
   );

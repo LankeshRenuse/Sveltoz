@@ -3,18 +3,45 @@ export default function BackgroundFX() {
     <div className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none">
       
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#071426] to-black"></div>
+<div
+  className="absolute inset-0"
+  style={{
+    background: `
+      radial-gradient(
+        circle at top center,
+        rgba(0,255,156,0.10),
+        transparent 40%
+      ),
+
+      linear-gradient(
+        to bottom,
+        #031026 0%,
+        #010914 45%,
+        #010a19 100%
+      )
+    `
+  }}
+></div>
 
       {/* Grid lines */}
       <div
         className="absolute inset-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(0,255,255,0.05) 0.0625rem, transparent 0.0625rem),
-            linear-gradient(90deg, rgba(0,255,255,0.05) 0.0625rem, transparent 0.0625rem)
-          `,
-          backgroundSize: "3.125rem 3.125rem"
-        }}
+      style={{
+  backgroundImage: `
+    linear-gradient(
+      rgba(0,255,156,0.05) 0.0625rem,
+      transparent 0.0625rem
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(0,255,156,0.05) 0.0625rem,
+      transparent 0.0625rem
+    )
+  `,
+
+  backgroundSize: "3.125rem 3.125rem"
+}}
       ></div>
 
     </div>

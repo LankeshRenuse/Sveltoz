@@ -30,7 +30,7 @@ img {
 }
 
 video {
-  max-width: 100%;
+  max-width: auto;
 }
 
 /* ========================= */
@@ -71,14 +71,30 @@ body {
 /* ========================= */
 .drone {
   position: fixed;
+
   width: 3.75rem;
-  /* 60px */
   height: 3.75rem;
+
   pointer-events: none;
   z-index: 10;
+
   opacity: 1;
+
   filter: drop-shadow(0 0 0.125rem #8fffd6);
+
+  /* ✨ SMOOTH HIDE */
+  transition:
+    opacity 0.25s ease,
+    scale 0.25s ease,
+    filter 0.25s ease;
+
+  will-change:
+    transform,
+    opacity,
+    scale;
 }
+
+
 
 /* ========================= */
 /*  CENTER */
@@ -321,20 +337,36 @@ body {
   z-index: 10;
 }
 
-/*  MAIN WIRE */
+/* 🌊 MAIN WIRE */
 .signal-path {
   stroke: #8fffd661;
+
   stroke-width: 2px;
+
   fill: none;
+
   stroke-linecap: round;
   stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 6px rgba(143, 255, 214, 0.6));
-}
 
+  vector-effect: non-scaling-stroke;
+
+  filter: drop-shadow(
+    0 0 6px rgba(143, 255, 214, 0.6)
+  );
+
+  /* ✨ SMOOTH HIDE */
+  transition:
+    opacity 0.2s ease,
+    filter 0.25s ease;
+
+  will-change:
+    opacity,
+    d;
+}
 /*  PARTICLE */
 .signal-svg circle {
   fill: #8fffd6;
+   transition: opacity 0.2s ease;
   filter: drop-shadow(0 0 6px #8fffd6);
 }
 
@@ -573,8 +605,10 @@ body {
 .hero {
   width: 100%;
   height: 100dvh;
+
   position: relative;
   overflow: hidden;
+
   padding: 0;
 }
 
@@ -582,6 +616,7 @@ body {
 
 .hero-banner {
   position: absolute;
+
   top: 50%;
   left: 50%;
 
@@ -600,8 +635,61 @@ body {
 
   user-select: none;
   pointer-events: none;
+
   display: block;
 }
 
+/* HERO PARTICLE OVERLAY */
+
+.hero-particle-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(143,255,214,0.06),
+      transparent 70%
+    );
+}
+
+/* OPTIONAL CINEMATIC FX */
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  backdrop-filter: brightness(1.05);
+}
+.hero canvas {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 2;
+  pointer-events: none;
+} 
 
 
+
+
+button,
+a,
+.btn {
+  position: relative;
+  z-index: 20;
+}

@@ -24,11 +24,10 @@ export default function ParticleBackground() {
     window.addEventListener("mousemove", moveMouse);
 
     // =========================
-    // ✅ CREATE PARTICLES
+    // CREATE PARTICLES
     // =========================
     const createParticles = () => {
 
-      // prevent duplicate
       if (canvasRef.current) return;
 
       canvas = document.createElement("canvas");
@@ -37,12 +36,16 @@ export default function ParticleBackground() {
       canvas.style.position = "fixed";
       canvas.style.top = "0";
       canvas.style.left = "0";
+
       canvas.style.width = "100%";
       canvas.style.height = "100%";
-      canvas.style.zIndex = "-1";
+
+      canvas.style.zIndex = "2";
+
       canvas.style.pointerEvents = "none";
 
       document.body.appendChild(canvas);
+
       canvasRef.current = canvas;
 
       init();
@@ -50,13 +53,16 @@ export default function ParticleBackground() {
     };
 
     // =========================
-    // ❌ DESTROY PARTICLES
+    // DESTROY
     // =========================
     const destroyParticles = () => {
+
       if (!canvasRef.current) return;
 
       cancelAnimationFrame(animationRef.current);
-      document.body.removeChild(canvasRef.current);
+
+      canvasRef.current.remove();
+
       canvasRef.current = null;
     };
 
@@ -77,6 +83,7 @@ export default function ParticleBackground() {
       canvas.style.height = height + "px";
 
       ctx.setTransform(1, 0, 0, 1, 0, 0);
+
       ctx.scale(dpr, dpr);
 
       const count = 120;
@@ -87,14 +94,12 @@ export default function ParticleBackground() {
         r: Math.random() * 2 + 0.5,
         angle: Math.random() * Math.PI * 2,
         speed: Math.random() * 0.2 + 0.05,
-
-        // 🔥 KEY: only some particles connect
         connect: Math.random() > 0.5
       }));
     };
 
     // =========================
-    // 🎬 ANIMATION
+    // ANIMATION
     // =========================
     const animate = () => {
 
@@ -103,34 +108,48 @@ export default function ParticleBackground() {
       const radius = 120;
       const radiusSq = radius * radius;
 
-      // ===== PARTICLES =====
+      // PARTICLES
       particles.forEach(p => {
 
         p.angle += 0.005;
+
         p.x += Math.cos(p.angle) * p.speed;
         p.y += Math.sin(p.angle) * p.speed;
 
         const dx = p.x - mouse.x;
         const dy = p.y - mouse.y;
+
         const distSq = dx * dx + dy * dy;
 
         let near = false;
 
         if (distSq < radiusSq) {
-          const force = (radiusSq - distSq) / radiusSq;
+
+          const force =
+            (radiusSq - distSq) / radiusSq;
+
           p.x += dx * force * 0.03;
           p.y += dy * force * 0.03;
+
           near = true;
         }
 
-        // wrap
+        // WRAP
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
+
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+
+        ctx.arc(
+          p.x,
+          p.y,
+          p.r,
+          0,
+          Math.PI * 2
+        );
 
         ctx.fillStyle = near
           ? "rgba(143,255,214,1)"
@@ -139,11 +158,12 @@ export default function ParticleBackground() {
         ctx.fill();
       });
 
-      // ===== CONNECTIONS (ONLY SOME PARTICLES) =====
+      // CONNECTIONS
       const maxDist = 80;
       const maxDistSq = maxDist * maxDist;
 
       for (let i = 0; i < particles.length; i++) {
+
         const p1 = particles[i];
 
         if (!p1.connect) continue;
@@ -151,22 +171,31 @@ export default function ParticleBackground() {
         let connections = 0;
 
         for (let j = i + 1; j < particles.length; j++) {
+
           const p2 = particles[j];
 
           if (!p2.connect) continue;
 
           const dx = p1.x - p2.x;
           const dy = p1.y - p2.y;
+
           const distSq = dx * dx + dy * dy;
 
-          if (distSq < maxDistSq && connections < 2) {
+          if (
+            distSq < maxDistSq &&
+            connections < 2
+          ) {
+
             connections++;
 
             ctx.beginPath();
+
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
 
-            ctx.strokeStyle = "rgba(143,255,214,0.08)";
+            ctx.strokeStyle =
+              "rgba(143,255,214,0.08)";
+
             ctx.lineWidth = 0.8;
 
             ctx.stroke();
@@ -174,30 +203,45 @@ export default function ParticleBackground() {
         }
       }
 
-      animationRef.current = requestAnimationFrame(animate);
+      animationRef.current =
+        requestAnimationFrame(animate);
     };
 
     // =========================
-    // 📱 RESPONSIVE CONTROL
+    // RESPONSIVE
     // =========================
     const handleResize = () => {
 
       if (window.innerWidth <= 768) {
-        destroyParticles();   // ❌ remove on mobile
+
+        destroyParticles();
+
       } else {
-        createParticles();    // ✅ create on desktop
+
+        createParticles();
       }
     };
 
-    // run once
     handleResize();
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener(
+      "resize",
+      handleResize
+    );
 
     return () => {
+
       destroyParticles();
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", moveMouse);
+
+      window.removeEventListener(
+        "resize",
+        handleResize
+      );
+
+      window.removeEventListener(
+        "mousemove",
+        moveMouse
+      );
     };
 
   }, []);
