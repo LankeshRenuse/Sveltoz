@@ -4,18 +4,19 @@ export default function Hero() {
 
     <section className="hero">
 
-      <video
-        className="hero-banner"
-        autoPlay
-        muted
-        loop
-        playsInline
-      >
-        <source
-          src="/entry-vid.mp4"
-          type="video/mp4"
-        />
-      </video>
+<video
+  className="hero-banner"
+  autoPlay
+  muted
+  loop
+  playsInline
+  preload="auto"
+>
+  <source
+    src="/entry-vid.mp4"
+    type="video/mp4"
+  />
+</video>  
 
       {/* HERO PARTICLE OVERLAY */}
       <div className="hero-particle-overlay"></div>
